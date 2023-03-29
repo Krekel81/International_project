@@ -1,0 +1,77 @@
+#!/bin/bash
+# make sure the extentions is .cgi in stead of .txt
+echo "Content-type: text/html";
+echo ""
+echo "<html><head>";
+echo "<title>Steering Wheel</title>";
+echo "</head><center>";
+echo "<Body>"
+echo "Poor mans Steering Wheel"
+direction=`echo $PATH_INFO| sed 's/\// /g' | awk '{print $1}'`
+side=`echo $PATH_INFO| sed 's/\// /g' | awk '{print $2}'`
+light=`echo $PATH_INFO| sed 's/\// /g' | awk '{print $3}'`
+if [[ "$light" == "" ]]
+then
+light="off"
+fi
+if [[ "$direction" == "" ]]
+then
+direction="stopped"
+fi
+if [[ "$side" == "" ]]
+then
+side="straight"
+fi
+echo "<table border>"
+#
+if [[ "$light" == "off" ]]
+then
+echo "<tr><th>dashboard light</th><th>off</th><th><a href=/cgi-bin/steering.cgi/$direction/$side/on>turn light on</a></th></tr>"
+else
+echo "<tr><th>dashboard light</th><th>on</th><th><a href=/cgi-bin/steering.cgi/$direction/$side/off>turn light off</a></th></tr>"
+fi
+echo "<tr><th></th><th></th><th></th></tr>"
+#
+if [[ "$direction" == "stopped" ]]
+then
+echo "<tr><th></th><th><a href=/cgi-bin/steering.cgi/forward/$side/$light>go forward</a></th><th></th></tr>"
+elif [[ "$direction" == "backward" ]]
+then
+echo "<tr><th></th><th><a href=/cgi-bin/steering.cgi/forward/$side/$light>forward</a></th><th></th></tr>"
+else
+echo "<tr><th></th><th><a href=/cgi-bin/steering.cgi/stopped/$side/$light>stop</a></th><th></th></tr>"
+fi
+#
+echo "<tr>"
+if [[ "$side" == "straight" ]]
+then
+echo "<th><a href=/cgi-bin/steering.cgi/$direction/left/$light>go left</a></th>"
+elif [[ "$side" == "right" ]]
+then
+echo "<th><a href=/cgi-bin/steering.cgi/$direction/left/$light>go left</a></th>"
+else
+echo "<th><a href=/cgi-bin/steering.cgi/$direction/straight/$light>go straight</a></th>"
+fi
+echo "<th>moving $direction steering $side <HR><a href=/cgi-bin/steering.cgi/stopped/straight/off>Reset</a></th>"
+if [[ "$side" == "straight" ]]
+then
+echo "<th><a href=/cgi-bin/steering.cgi/$direction/right/$light>go right</a></th>"
+elif [[ "$side" == "left" ]]
+then
+echo "<th><a href=/cgi-bin/steering.cgi/$direction/right/$light>go right</a></th>"
+else
+echo "<th><a href=/cgi-bin/steering.cgi/$direction/straight/$light>go straight</a></th>"
+fi
+echo "</tr>"
+#
+if [[ "$direction" == "stopped" ]]
+then
+echo "<tr><th></th><th><a href=/cgi-bin/steering.cgi/backward/$side/$light>go backward</a></th><th></th></tr>"
+elif [[ "$direction" == "forward" ]]
+then
+echo "<tr><th></th><th><a href=/cgi-bin/steering.cgi/backward/$side/$light>go backward</a></th><th></th></tr>"
+else
+echo "<tr><th></th><th><a href=/cgi-bin/steering.cgi/stopped/$side/$light>stop</a></th><th></th></tr>"
+fi
+echo "</table>"
+echo "</Body>"

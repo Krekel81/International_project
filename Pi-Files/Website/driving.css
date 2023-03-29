@@ -1,0 +1,17 @@
+input[type=submit] {
+    color: white;
+    text-decoration: none;
+    border: 1rem solid rgb(44, 44, 44);
+    background-color: rgb(44, 44, 44);
+    border-radius: 2rem;
+    font-weight: bold;
+    width: 15rem;
+    text-align: center;
+    cursor:pointer;
+}
+
+input[type=submit]:hover {
+    border: 1rem solid white;
+    background-color: white;
+    color: black;
+}
